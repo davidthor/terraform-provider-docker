@@ -384,7 +384,7 @@ func prepareBuildContext(specifiedContext string, specifiedDockerfile string) (i
 	contextDir, relDockerfile, err = build.GetContextFromLocalDir(specifiedContext, specifiedDockerfile)
 	log.Printf("[DEBUG] contextDir %s", contextDir)
 	log.Printf("[DEBUG] relDockerfile %s", relDockerfile)
-	if err == nil && strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+	if err == nil && (strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) || strings.HasPrefix(relDockerfile, string(filepath.Separator))) {
 		// Dockerfile is outside of build-context; read the Dockerfile and pass it as dockerfileCtx
 		log.Printf("[DEBUG] Dockerfile is outside of build-context")
 		dockerfileCtx, err = os.Open(specifiedDockerfile)

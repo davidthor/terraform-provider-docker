@@ -451,7 +451,7 @@ func TestAccDockerImage_build(t *testing.T) {
 }
 
 const testDockerFileExample = `
-FROM python:3-stretch
+FROM python:3
 
 WORKDIR /app
 
