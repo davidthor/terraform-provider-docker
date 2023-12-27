@@ -24,9 +24,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        terraform_version: 
-        - "0.15.x"
-        - "1.1.x"
+        terraform_version:
+        - "1.5.x"
         resource_type: 
         - "TestAccDockerConfig"
         - "TestAccDockerContainer"
