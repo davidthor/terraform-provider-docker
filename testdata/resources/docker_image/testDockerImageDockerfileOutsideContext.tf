@@ -3,7 +3,7 @@ resource "docker_image" "outside_context" {
 
   build {
     context    = "."
-    dockerfile = "../Dockerfile"
+    dockerfile = "%s"
   }
 }
 

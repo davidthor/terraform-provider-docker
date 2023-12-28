@@ -381,6 +381,9 @@ func prepareBuildContext(specifiedContext string, specifiedDockerfile string) (i
 		relDockerfile string
 		err           error
 	)
+	log.Printf("[DEBUG] specifiedContext %s", specifiedContext)
+	log.Printf("[DEBUG] specifiedDockerfile %s", specifiedDockerfile)
+
 	contextDir, relDockerfile, err = build.GetContextFromLocalDir(specifiedContext, specifiedDockerfile)
 	log.Printf("[DEBUG] contextDir %s", contextDir)
 	log.Printf("[DEBUG] relDockerfile %s", relDockerfile)

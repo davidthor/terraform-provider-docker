@@ -479,7 +479,32 @@ func TestAccDockerImage_buildOutsideContext(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: loadTestConfiguration(t, RESOURCE, "docker_image", "testDockerImageDockerfileOutsideContext"),
+				Config: fmt.Sprintf(loadTestConfiguration(t, RESOURCE, "docker_image", "testDockerImageDockerfileOutsideContext"), "../Dockerfile"),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestMatchResourceAttr("docker_image.outside_context", "name", regexp.MustCompile(`\Aoutside-context:latest\z`)),
+				),
+			},
+		},
+	})
+}
+
+
+func TestAccDockerImage_buildFromAbsoluteDockerfilePath(t *testing.T) {
+	ctx := context.Background()
+	tf, _ := os.CreateTemp("", "Dockerfile")
+	if _, err := tf.Write([]byte(testDockerFileExample)); err != nil {
+		t.Fatalf("failed to create a Dockerfile %s for test: %+v", tf.Name(), err)
+	}
+	defer os.Remove(tf.Name())
+	resource.Test(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: providerFactories,
+		CheckDestroy: func(state *terraform.State) error {
+			return testAccDockerImageDestroy(ctx, state)
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: fmt.Sprintf(loadTestConfiguration(t, RESOURCE, "docker_image", "testDockerImageDockerfileOutsideContext"), tf.Name()),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr("docker_image.outside_context", "name", regexp.MustCompile(`\Aoutside-context:latest\z`)),
 				),
